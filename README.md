@@ -16,12 +16,12 @@ not a replacement — `switch.sh` flips between all three.
   with a falloff based on its distance from the cursor and lifts slightly, the
   way the macOS dock does. Verified by forcing a cursor position and measuring
   the rendered icon heights.
-- **Trash** — a separator and a trash icon at the right end.
 - **Clock and tray** — kept on the right so system info stays visible. macOS
   puts these in a top menu bar; dropping them would lose the tray.
 
 The bar itself is made transparent and tall enough that the dock reads as
-floating above the bottom edge.
+floating above the bottom edge. The dock ends at the last app icon — no separator
+or trash.
 
 ## Install
 

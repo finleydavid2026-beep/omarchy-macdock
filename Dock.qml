@@ -44,11 +44,8 @@ Item {
   // Cursor position in dock-local coordinates. -1 means "no cursor".
   property real cursorX: -1
 
-  implicitWidth: root.padX * 2 + Math.max(1, root.slots.length) * (root.iconSize + root.iconGap) - root.iconGap + root.trashW + root.trashGap
+  implicitWidth: root.padX * 2 + Math.max(1, root.slots.length) * (root.iconSize + root.iconGap) - root.iconGap
   implicitHeight: root.padY * 2 + root.iconSize
-
-  readonly property int trashW: 48
-  readonly property int trashGap: 18
 
   // [{ index, id, name, icon, source, running }]
   property var slots: []
@@ -213,29 +210,4 @@ Item {
     }
   }
 
-  // Separator, then the trash — the macOS dock's right-hand end.
-  Rectangle {
-    x: root.padX + root.slots.length * (root.iconSize + root.iconGap) - root.iconGap + root.trashGap / 2
-    width: 1
-    height: root.iconSize * 0.7
-    anchors.verticalCenter: parent.verticalCenter
-    color: Qt.rgba(1, 1, 1, 0.3)
-  }
-
-  Image {
-    x: root.padX + root.slots.length * (root.iconSize + root.iconGap) - root.iconGap + root.trashGap
-    width: root.trashW
-    height: root.trashW
-    anchors.verticalCenter: parent.verticalCenter
-    asynchronous: true
-    smooth: false
-    source: root.trashIcon
-    visible: root.trashIcon.length > 0
-  }
-
-  readonly property string trashIcon: {
-    var found = Quickshell.iconPath("user-trash", true)
-    if (found && found.length > 0) return found
-    return Quickshell.iconPath("user-trash-full", true) || ""
-  }
 }
