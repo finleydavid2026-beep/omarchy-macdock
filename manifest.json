@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "macdock",
+  "name": "macOS dock",
+  "version": "1.0.0",
+  "author": "Remi",
+  "description": "A macOS-style dock: a floating rounded translucent panel with magnification on hover.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Dock.qml"
+  },
+  "barWidget": {
+    "displayName": "macOS dock",
+    "description": "A floating macOS-style dock with magnification",
+    "category": "Compositor",
+    "allowMultiple": false
+  }
+}
