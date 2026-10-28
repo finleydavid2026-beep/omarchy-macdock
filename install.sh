@@ -117,7 +117,6 @@ keep = {e["id"]: e for e in right if isinstance(e, dict) and e.get("id") in ("om
 right = []
 right += ([clock] if clock is not None else [{"id": "omarchy.clock"}])
 right += [keep.get("omarchy.tray", {"id": "omarchy.tray"})]
-right += [keep.get("omarchy.indicators", {"id": "omarchy.indicators"})]
 
 layout["left"] = left
 layout["center"] = [{"id": "macdock"}]
