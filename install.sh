@@ -111,17 +111,13 @@ left = []
 clock = next((e for e in layout.get("center", []) if isinstance(e, dict) and e.get("id") == "omarchy.clock"), None)
 if clock is None:
     clock = next((e for e in layout.get("right", []) if isinstance(e, dict) and e.get("id") == "omarchy.clock"), None)
-right = [e for e in layout.get("right", []) if isinstance(e, dict) and e.get("id") in ("omarchy.tray", "omarchy.indicators", "omarchy.bluetooth", "omarchy.audio", "omarchy.power", "omarchy.network")]
-# Build the right section in the desired order: clock, tray/indicators,
-# spacer, then the system widgets.
+# The dock carries its own system-control icons, so the right section only
+# needs the clock, tray, and indicators.
 keep = {e["id"]: e for e in right if isinstance(e, dict) and e.get("id") in ("omarchy.tray", "omarchy.indicators")}
 right = []
 right += ([clock] if clock is not None else [{"id": "omarchy.clock"}])
 right += [keep.get("omarchy.tray", {"id": "omarchy.tray"})]
 right += [keep.get("omarchy.indicators", {"id": "omarchy.indicators"})]
-right += [{"id": "omarchy.spacer", "width": 12}]
-for item in ({"id": "omarchy.network"}, {"id": "omarchy.bluetooth"}, {"id": "omarchy.audio"}, {"id": "omarchy.power"}):
-    right.append(item)
 
 layout["left"] = left
 layout["center"] = [{"id": "macdock"}]
