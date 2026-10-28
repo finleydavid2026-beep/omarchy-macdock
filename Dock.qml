@@ -44,8 +44,24 @@ Item {
   // Cursor position in dock-local coordinates. -1 means "no cursor".
   property real cursorX: -1
 
-  implicitWidth: root.padX * 2 + Math.max(1, root.slots.length) * (root.iconSize + root.iconGap) - root.iconGap
-  implicitHeight: root.padY * 2 + root.iconSize
+  // System control icons tucked into the right end of the dock: network,
+  // bluetooth, audio, power. They are smaller than the app icons and sit in
+  // the same translucent panel, so the whole bar reads as one dock.
+  readonly property int sysSize: 24
+  readonly property int sysGap: 6
+  readonly property int sysPadAfterApps: 10
+  readonly property var sysControls: [
+    { id: "network",  icon: "network-wireless-connected", cmd: "omarchy-shell shell toggle omarchy.network '{}'" },
+    { id: "bluetooth",icon: "bluetooth",                 cmd: "omarchy-shell shell toggle omarchy.bluetooth '{}'" },
+    { id: "audio",    icon: "audio-volume-high",          cmd: "omarchy-shell shell toggle omarchy.audio '{}'" },
+    { id: "power",    icon: "battery",                    cmd: "omarchy-shell shell toggle omarchy.power '{}'" }
+  ]
+
+  implicitWidth: root.padX * 2
+    + Math.max(1, root.slots.length) * (root.iconSize + root.iconGap) - root.iconGap
+    + (root.slots.length > 0 ? root.sysPadAfterApps : 0)
+    + root.sysControls.length * root.sysSize + (root.sysControls.length - 1) * root.sysGap
+  implicitHeight: root.padY * 2 + Math.max(root.iconSize, root.sysSize)
 
   // [{ index, id, name, icon, source, running }]
   property var slots: []
@@ -133,6 +149,11 @@ Item {
     root.slots = next
   }
 
+  function togglePanel(cmd) {
+    if (!cmd || !root.bar) return
+    try { root.bar.run(cmd) } catch (e) { }
+  }
+
   function launch(slot) {
     if (!slot || !slot.id) return
     var entries = root.appEntries()
@@ -205,6 +226,58 @@ Item {
         onClicked: function() { root.launch(parent.modelData) }
         onEntered: function() {
           if (root.bar && root.bar.showTooltip) root.bar.showTooltip(parent, parent.modelData.name)
+        }
+      }
+    }
+  }
+
+  // System control icons at the right end of the dock.
+  Item {
+    id: sysContainer
+    x: root.padX + root.slots.length * (root.iconSize + root.iconGap) - root.iconGap + root.sysPadAfterApps
+    y: root.height / 2 - root.sysSize / 2
+    width: root.sysControls.length * root.sysSize + (root.sysControls.length - 1) * root.sysGap
+    height: root.sysSize
+
+    Repeater {
+      model: root.sysControls
+      delegate: Rectangle {
+        x: index * (root.sysSize + root.sysGap)
+        y: 0
+        width: root.sysSize
+        height: root.sysSize
+        radius: 5
+        color: Qt.rgba(0.2, 0.6, 1, 0.35)
+        border.width: 1
+        border.color: Qt.rgba(1, 1, 1, 0.4)
+
+        Text {
+          anchors.centerIn: parent
+          text: {
+            var ctrl = root.sysControls[index]
+            if (!ctrl) return ""
+            var id = ctrl.id
+            if (id === "network")   return ""
+            if (id === "bluetooth") return ""
+            if (id === "audio")     return ""
+            if (id === "power")     return ""
+            return id.charAt(0).toUpperCase()
+          }
+          color: "white"
+          font.pixelSize: 14
+          font.bold: true
+        }
+        MouseArea {
+          anchors.fill: parent
+          cursorShape: Qt.PointingHandCursor
+          onClicked: function() {
+            var ctrl = root.sysControls[index]
+            if (ctrl) root.togglePanel(ctrl.cmd)
+          }
+          onEntered: function() {
+            var ctrl = root.sysControls[index]
+            if (root.bar && root.bar.showTooltip && ctrl) root.bar.showTooltip(parent, ctrl.id)
+          }
         }
       }
     }
