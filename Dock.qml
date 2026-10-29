@@ -51,10 +51,10 @@ Item {
   readonly property int sysGap: 6
   readonly property int sysPadAfterApps: 10
   readonly property var sysControls: [
-    { id: "network",  icon: "network-wireless-connected", cmd: "omarchy-shell shell toggle omarchy.network '{}'" },
-    { id: "bluetooth",icon: "bluetooth",                 cmd: "omarchy-shell shell toggle omarchy.bluetooth '{}'" },
-    { id: "audio",    icon: "audio-volume-high",          cmd: "omarchy-shell shell toggle omarchy.audio '{}'" },
-    { id: "power",    icon: "battery",                    cmd: "omarchy-shell shell toggle omarchy.power '{}'" }
+    { id: "network",  icon: "/home/theclaw/.config/omarchy/plugins/macdock/assets/wifi.png", cmd: "omarchy-shell shell toggle omarchy.network '{}'" },
+    { id: "bluetooth",icon: "/home/theclaw/.config/omarchy/plugins/macdock/assets/bluetooth.png", cmd: "omarchy-shell shell toggle omarchy.bluetooth '{}'" },
+    { id: "audio",    icon: "/home/theclaw/.config/omarchy/plugins/macdock/assets/audio.png", cmd: "omarchy-shell shell toggle omarchy.audio '{}'" },
+    { id: "power",    icon: "/home/theclaw/.config/omarchy/plugins/macdock/assets/battery.png", cmd: "omarchy-shell shell toggle omarchy.power '{}'" }
   ]
 
   implicitWidth: root.padX * 2
@@ -241,32 +241,40 @@ Item {
 
     Repeater {
       model: root.sysControls
-      delegate: Rectangle {
+      delegate: Item {
+        property var ctrl: root.sysControls[index]
         x: index * (root.sysSize + root.sysGap)
         y: 0
         width: root.sysSize
         height: root.sysSize
-        radius: 5
-        color: Qt.rgba(0.2, 0.6, 1, 0.35)
-        border.width: 1
-        border.color: Qt.rgba(1, 1, 1, 0.4)
 
+        Rectangle {
+          anchors.fill: parent
+          radius: 5
+          color: Qt.rgba(0.2, 0.6, 1, 0.35)
+          border.width: 1
+          border.color: Qt.rgba(1, 1, 1, 0.4)
+        }
         Text {
           anchors.centerIn: parent
+          anchors.margins: 2
+          width: parent.width - 4
+          height: parent.height - 4
           text: {
             var ctrl = root.sysControls[index]
             if (!ctrl) return ""
-            var id = ctrl.id
-            if (id === "network")   return ""  // nf-fa-wifi
-            if (id === "bluetooth") return ""  // nf-fa-bluetooth
-            if (id === "audio")     return ""  // nf-fa-volume-up
-            if (id === "power")     return ""  // nf-fa-power-off
-            return id.charAt(0).toUpperCase()
+            if (ctrl.id === "network")   return "\uf1eb"  // nf-fa-wifi v2/v3
+            if (ctrl.id === "bluetooth") return "\uf293"  // nf-fa-bluetooth
+            if (ctrl.id === "audio")     return "\uf026"  // nf-fa-volume-up
+            if (ctrl.id === "power")     return "\uf240"  // nf-fa-battery-full
+            return ""
           }
           color: "white"
-          font.family: root.bar ? root.bar.fontFamily || "monospace" : "monospace"
+          font.family: "JetBrainsMono Nerd Font"
           font.pixelSize: 14
           font.bold: true
+          horizontalAlignment: Text.AlignHCenter
+          verticalAlignment: Text.AlignVCenter
         }
         MouseArea {
           anchors.fill: parent

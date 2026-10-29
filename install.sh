@@ -64,6 +64,7 @@ if (( DRY_RUN )); then
 else
   mkdir -p "$PLUGIN_DIR"
   cp "$REPO/manifest.json" "$REPO/Dock.qml" "$PLUGIN_DIR/"
+  cp -r "$REPO/assets" "$PLUGIN_DIR/"
 fi
 
 # ------------------------------------------------------------- 4. app list
