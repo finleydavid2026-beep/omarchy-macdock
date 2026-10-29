@@ -257,10 +257,10 @@ Item {
             var ctrl = root.sysControls[index]
             if (!ctrl) return ""
             var id = ctrl.id
-            if (id === "network")   return ""
-            if (id === "bluetooth") return ""
-            if (id === "audio")     return ""
-            if (id === "power")     return ""
+            if (id === "network")   return ""  // nf-fa-wifi
+            if (id === "bluetooth") return ""  // nf-fa-bluetooth
+            if (id === "audio")     return ""  // nf-fa-volume-up
+            if (id === "power")     return ""  // nf-fa-power-off
             return id.charAt(0).toUpperCase()
           }
           color: "white"

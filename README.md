@@ -23,6 +23,10 @@ The bar itself is made transparent and tall enough that the dock reads as
 floating above the bottom edge. The dock ends at the last app icon — no separator
 or trash.
 
+System controls (Wi-Fi, Bluetooth, audio, battery/power) sit at the right end
+of the dock as small icons. Clicking any opens its panel. The dock ends at the last app icon — no separator
+or trash.
+
 ## Install
 
 ```bash
