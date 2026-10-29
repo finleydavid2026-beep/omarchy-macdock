@@ -264,6 +264,7 @@ Item {
             return id.charAt(0).toUpperCase()
           }
           color: "white"
+          font.family: root.bar ? root.bar.fontFamily || "monospace" : "monospace"
           font.pixelSize: 14
           font.bold: true
         }
